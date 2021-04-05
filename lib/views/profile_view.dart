@@ -8,9 +8,8 @@ class ProfileView extends StatefulWidget {
   }
 }
 
-bool editMode = false;
-
 class _ProfileView extends State<ProfileView> {
+  bool editMode = false;
   @override
   Widget build(BuildContext context) {
     TextEditingController textEditController = TextEditingController();

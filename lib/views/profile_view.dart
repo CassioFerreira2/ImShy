@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:imshy/model/user.dart';
+import 'package:imshy/repo/repo.dart';
+import 'package:imshy/repo/repo_utils.dart';
 import 'package:imshy/utils.dart';
 
 class ProfileView extends StatefulWidget {
@@ -9,7 +12,18 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileView extends State<ProfileView> {
+  late UserRepository userRepo;
+  late User me;
+
   bool editMode = false;
+  @override
+  void initState() {
+    super.initState();
+
+    userRepo = UserRepository();
+    me = RepoUtils.getRandomUser(userRepo);
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController textEditController = TextEditingController();
@@ -95,7 +109,15 @@ Widget mProfileBottomAppBar(Function onHomePressed, Function onEditPressed) =>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(icon: Icon(Icons.edit), onPressed: onEditPressed),
-            IconButton(icon: Icon(Icons.home), onPressed: onHomePressed)
+            IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  onEditPressed();
+                }),
+            IconButton(
+                icon: Icon(Icons.home),
+                onPressed: () {
+                  onHomePressed();
+                })
           ],
         ));

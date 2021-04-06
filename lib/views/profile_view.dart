@@ -121,7 +121,28 @@ class _ProfileView extends State<ProfileView> {
                 icon: Icon(Icons.home),
                 onPressed: () {
                   onHomePressed?.call();
-                })
+                }),
+            Container(
+              height: 200,
+              width: 200,
+              child: Expanded(
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.pinkAccent
+                          ),
+                          child: Padding(padding: EdgeInsets.all(15.0)),
+                        )
+                      ],
+                    ),
+                    Column()
+                  ],
+                )
+            )
+            )
           ],
         ));
 }
@@ -141,4 +162,11 @@ class ProfileImage extends Container {
                   )));
 }
 
-
+DropdownButton<String> test() {
+  return DropdownButton<String> (
+    focusColor: Colors.white,
+    items: [
+      DropdownMenuItem(child: Text("Test"),)
+    ],
+  );
+}

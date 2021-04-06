@@ -40,12 +40,12 @@ class _ProfileView extends State<ProfileView> {
                     profileBackground(),
                     Container(
                       alignment: Alignment.bottomCenter,
-                      child: ProfileImage('assets/cute.jpg'),
+                      child: profileImage(),
                     )
                   ],
                 )),
             Text(
-              "ImSoCuute",
+              me.name,
               style: TextStyle(fontSize: 20.0),
             ),
             Container(
@@ -53,14 +53,7 @@ class _ProfileView extends State<ProfileView> {
                 alignment: AlignmentDirectional.topStart,
                 child: Column(
                   children: [
-                    editMode
-                        ? TextField(
-                            controller: textEditController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            autofocus: true,
-                          )
-                        : Text(getLorenIpsum())
+                    description()
                   ],
                 ))
           ])
@@ -89,21 +82,27 @@ class _ProfileView extends State<ProfileView> {
                 color: Colors.blueGrey,
                 offset: Offset(10.0, 10.0))
           ]));
-}
 
-class ProfileImage extends Container {
-  ProfileImage(String asset)
-      : super(
-            height: 135,
-            width: 135,
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.black87, style: BorderStyle.solid, width: 2),
-                borderRadius: BorderRadius.circular(25),
-                image: DecorationImage(image: AssetImage(asset))));
-}
+  Widget description() {
+    var textEdit = TextEditingController();
+    String text = me.description ?? "";
+    textEdit.text = text;
 
-Widget mProfileBottomAppBar(Function onHomePressed, Function onEditPressed) =>
+    if (editMode) {
+      return TextField(
+        controller: textEdit,
+      );
+    } else {
+      return Text(text);
+    }
+  }
+
+  Widget profileImage() {
+    Image img = me.profileImage ?? Image.asset("cute_dog.jpg");
+    return ProfileImage(img.image);
+  }
+
+  Widget mProfileBottomAppBar(Function onHomePressed, Function onEditPressed) =>
     BottomAppBar(
         color: Colors.grey[400],
         child: Row(
@@ -121,3 +120,21 @@ Widget mProfileBottomAppBar(Function onHomePressed, Function onEditPressed) =>
                 })
           ],
         ));
+}
+
+class ProfileImage extends Container {
+  ProfileImage(ImageProvider src)
+      : super(
+            height: 135,
+            width: 135,
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.black87, style: BorderStyle.solid, width: 2),
+                borderRadius: BorderRadius.circular(25),
+                image: DecorationImage(
+                  image: src,
+                  fit: BoxFit.cover
+                  )));
+}
+
+

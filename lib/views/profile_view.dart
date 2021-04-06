@@ -58,13 +58,16 @@ class _ProfileView extends State<ProfileView> {
                 ))
           ])
         ]),
-        bottomNavigationBar: mProfileBottomAppBar(() {}, () {
-          print(editMode);
-
-          setState(() {
-            editMode = !editMode;
-          });
-        }));
+        bottomNavigationBar: mProfileBottomAppBar(
+          onHomePressed: () {
+            Navigator.pushNamed(context, "/");
+          },
+          onEditPressed: () {
+            setState(() {
+              editMode = !editMode;
+            });  
+          }
+      ));
   }
 
   Widget profileBackground() => Container(
@@ -102,7 +105,7 @@ class _ProfileView extends State<ProfileView> {
     return ProfileImage(img.image);
   }
 
-  Widget mProfileBottomAppBar(Function onHomePressed, Function onEditPressed) =>
+  Widget mProfileBottomAppBar({Function? onHomePressed, Function? onEditPressed}) =>
     BottomAppBar(
         color: Colors.grey[400],
         child: Row(
@@ -111,12 +114,13 @@ class _ProfileView extends State<ProfileView> {
             IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  onEditPressed();
+                  // null aware
+                  onEditPressed?.call() ;
                 }),
             IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () {
-                  onHomePressed();
+                  onHomePressed?.call();
                 })
           ],
         ));

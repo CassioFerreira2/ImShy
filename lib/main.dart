@@ -6,7 +6,11 @@ void main() {
   runApp(MyApp());
 }
 
+enum ItemStateType { All, Friendship, Desactivated }
+
 class MyApp extends StatelessWidget {
+  static ItemStateType state = ItemStateType.All;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

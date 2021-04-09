@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:imshy/general_components/bottom_bar/bottom_bar.dart';
 import 'package:imshy/general_components/bottom_bar/state_item.dart';
+import 'package:imshy/general_components/bottom_bar/state_menu.dart';
 import 'package:imshy/model/user.dart';
 import 'package:imshy/repo/repo.dart';
 import 'package:imshy/repo/repo_utils.dart';
@@ -41,7 +43,8 @@ class _ProfileView extends State<ProfileView> {
     textEditController.text = getLorenIpsum();
 
     return Scaffold(
-        body: ListView(children: [
+      body: Stack(children: [
+        ListView(children: [
           Column(children: [
             Container(
                 constraints: BoxConstraints.expand(
@@ -55,10 +58,6 @@ class _ProfileView extends State<ProfileView> {
                     ),
                   ],
                 )),
-            Container(
-              key: LabeledGlobalKey(""),
-              child: StateItem(),
-            ),
             Text(
               me.name,
               style: TextStyle(fontSize: 20.0),
@@ -68,16 +67,12 @@ class _ProfileView extends State<ProfileView> {
                 alignment: AlignmentDirectional.topStart,
                 child: Column(
                   children: [description()],
-                ))
+                )),
           ])
         ]),
-        bottomNavigationBar: mProfileBottomAppBar(onHomePressed: () {
-          Navigator.pushNamed(context, "/");
-        }, onEditPressed: () {
-          setState(() {
-            editMode = !editMode;
-          });
-        }));
+      ]),
+      bottomNavigationBar: ImshyBottomBar(),
+    );
   }
 
   Widget profileBackground() => Container(
@@ -120,61 +115,9 @@ class _ProfileView extends State<ProfileView> {
       BottomAppBar(
           color: Colors.grey[400],
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    // null aware
-                    onEditPressed?.call();
-                  }),
-              IconButton(
-                  icon: Icon(Icons.home),
-                  onPressed: () {
-                    onHomePressed?.call();
-                  }),
-              statusItem(MyApp.state, (ItemStateType type) {
-                openStatusItemMenu();
-              }, key: _keyStatusItem)
-            ],
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [StateMenu(stateChanged: (_) {})],
           ));
-
-  void findWidget() {
-    RenderBox rBox =
-        _keyStatusItem.currentContext?.findRenderObject() as RenderBox;
-    statusItemSize = rBox.size;
-    statusItemPosition = rBox.localToGlobal(Offset.zero);
-  }
-
-  void openStatusItemMenu() {
-    findWidget();
-    _overlayEntry = _overlayEntryBuilder();
-    Overlay.of(context)?.insert(_overlayEntry);
-    isStateMenuOpen = !isStateMenuOpen;
-  }
-
-  void closeStatusItemMenu() {
-    _overlayEntry.remove();
-    isStateMenuOpen = !isStateMenuOpen;
-  }
-
-  OverlayEntry _overlayEntryBuilder() {
-    print(statusItemPosition.dy);
-    return OverlayEntry(
-      builder: (context) {
-        return Positioned(
-          bottom: statusItemSize.height,
-          left: statusItemPosition.dx,
-          width: statusItemSize.width,
-          child: Material(
-              color: Colors.transparent,
-              child: allStatusItem((ItemStateType state) {
-                stateItemClicked(state);
-              })),
-        );
-      },
-    );
-  }
 
   void stateItemClicked(ItemStateType state) {}
 }
@@ -189,87 +132,4 @@ class ProfileImage extends Container {
                     color: Colors.black87, style: BorderStyle.solid, width: 2),
                 borderRadius: BorderRadius.circular(25),
                 image: DecorationImage(image: src, fit: BoxFit.cover)));
-}
-
-Widget allStatusItem(Function(ItemStateType type) event) {
-  return Column(
-    children: [
-      statusItem(ItemStateType.All, event),
-      Divider(),
-      statusItem(ItemStateType.Friendship, event),
-      Divider(),
-      statusItem(ItemStateType.Desactivated, event),
-      Divider(),
-    ],
-  );
-}
-
-Widget statusItem(ItemStateType state, Function(ItemStateType) callback,
-    {Key? key}) {
-  Color color;
-  String text;
-
-  switch (state) {
-    case ItemStateType.All:
-      color = Colors.pink[400] ?? Colors.pink;
-      text = "Tudo";
-      break;
-    case ItemStateType.Friendship:
-      color = Colors.green;
-      text = "Amizade";
-      break;
-    default:
-      text = "Desativado";
-      color = Colors.black87;
-      break;
-  }
-
-  double width = 180.0;
-  double height = 45.0;
-
-  double textLeft = 35.0;
-  double statusIconWidth = 10.0;
-  double statusIconHeight = 10.0;
-  double offset = 5.0 * 2;
-  return Container(
-      key: key,
-      width: width,
-      height: height,
-      child: GestureDetector(
-          onTap: () {
-            callback(state);
-          },
-          child: Stack(alignment: Alignment.center, children: [
-            // status icon
-            Positioned(
-              width: statusIconWidth,
-              height: statusIconHeight,
-              left: textLeft - statusIconWidth,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 2,
-                        color: Color(0xFF000000),
-                        offset: Offset(0.0, 0.0)),
-                  ],
-                ),
-                child: SizedBox.expand(),
-              ),
-            ),
-
-            // text
-            Positioned(
-              left: textLeft + offset,
-              child: Container(
-                  decoration: BoxDecoration(),
-                  child: Text(text,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold))),
-            ),
-
-            // text
-          ])));
 }

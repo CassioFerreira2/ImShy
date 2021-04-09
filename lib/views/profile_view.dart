@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imshy/general_components/bottom_bar/status_menu.dart';
 import 'package:imshy/model/user.dart';
 import 'package:imshy/repo/repo.dart';
 import 'package:imshy/repo/repo_utils.dart';
@@ -54,6 +55,10 @@ class _ProfileView extends State<ProfileView> {
                     ),
                   ],
                 )),
+            Container(
+              key: LabeledGlobalKey(""),
+              child: StateItem(size: Size(190, 35)),
+            ),
             Text(
               me.name,
               style: TextStyle(fontSize: 20.0),

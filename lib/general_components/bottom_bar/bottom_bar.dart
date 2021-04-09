@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:math' as Math;
 
 import 'package:imshy/constants.dart';
 
-class ImshyBottomBar extends StatelessWidget {
+class ImshyTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Color(0xFFFF0000)),
       child: CustomPaint(
         painter: BottomBarShape(),
       ),
@@ -20,26 +20,36 @@ class BottomBarShape extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Define a paint object
     final paint = Paint()
+      ..strokeWidth = 3.5
       ..style = PaintingStyle.fill
-      ..strokeWidth = 4.0
       ..isAntiAlias = true
-      ..shader = LinearGradient(colors: [
-        primaryRed.withOpacity(0.3),
-        textAndOtherThings.withOpacity(0.3),
-      ]).createShader(Rect.fromCenter(
-          center: Offset(140, size.height / 2), width: 140 * 2, height: 50.0));
+      ..color = textAndOtherThings;
+    final shadowPaint = Paint()
+      ..strokeWidth = 3.5
+      ..style = PaintingStyle.stroke
+      ..isAntiAlias = true
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 4)
+      ..color = Colors.black.withOpacity(0.9);
 
     // Method to convert degree to radians
     double degToRad(num deg) => deg * (Math.pi / 180.0);
 
     Path path = Path();
-    path.moveTo(0.0, size.height - 50.0);
-    path.lineTo(140.0 * 2, size.height - 50.0);
-    path.arcToPoint(Offset(140 * 2, size.height + 70),
-        radius: Radius.circular(60));
-    path.lineTo(0, size.height);
+    path.moveTo(size.width, 48.0);
+    path.lineTo(size.width * 0.6, 48.0);
+    path.arcToPoint(Offset(size.width * 0.5, 0.0), radius: Radius.circular(50));
+    path.lineTo(size.width, 0.0);
     path.close();
 
+    Path shadowPath = Path()
+      ..moveTo(size.width, 48.0)
+      ..lineTo(size.width * 0.6, 48.0)
+      ..arcToPoint(Offset(size.width * 0.5, 0.0), radius: Radius.circular(50))
+      ..arcToPoint(Offset(size.width * 0.6, 48.0),
+          radius: Radius.circular(50), clockwise: false)
+      ..lineTo(size.width, 48.0);
+
+    canvas.drawPath(shadowPath, shadowPaint);
     canvas.drawPath(path, paint);
   }
 

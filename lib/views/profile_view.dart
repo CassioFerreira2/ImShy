@@ -51,7 +51,7 @@ class _ProfileView extends State<ProfileView> {
                     width: double.infinity, height: 300.0),
                 child: Stack(
                   children: [
-                    profileBackground(),
+                    //profileBackground(),
                     Container(
                       alignment: Alignment.bottomCenter,
                       child: profileImage(),
@@ -70,8 +70,8 @@ class _ProfileView extends State<ProfileView> {
                 )),
           ])
         ]),
+        Positioned.fill(child: ImshyTopBar())
       ]),
-      bottomNavigationBar: ImshyBottomBar(),
     );
   }
 

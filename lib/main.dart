@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:imshy/route/route_generator.dart';
 import 'package:imshy/views/profile_view.dart';
 
-import 'general_components/bottom_bar/status_menu.dart';
+import 'general_components/bottom_bar/state_item.dart';
 
 void main() {
   runApp(MyApp());

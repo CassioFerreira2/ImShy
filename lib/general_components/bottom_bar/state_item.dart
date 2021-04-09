@@ -9,10 +9,12 @@ class StateItem extends StatefulWidget {
   final debugMode;
 
   StateItem(
-      {this.size = const Size(200, 35.0),
+      {Key? key,
+      this.size = const Size(190, 35),
       this.stateType = ItemStateType.All,
       this.callback,
-      this.debugMode = false});
+      this.debugMode = false})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -69,34 +71,39 @@ class _StateItem extends State<StateItem> {
         width: size.width,
         height: size.height,
         color: debugMode ? Color(0x22222222) : null,
-        child: Row(
-          children: [
-            // state icon
-            Container(
-                color: debugMode ? Color(0x3300FF000) : null,
-                width: iconSpaceWidth,
-                child: Center(
-                    child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _iconStatusColor,
-                          ),
-                        )))),
-            Container(
-                color: debugMode ? Color(0x330000FF) : null,
-                width: textSpaceWidth,
-                child: Padding(
-                    padding: EdgeInsets.only(left: 2),
-                    child: SizedBox(
-                        height: size.height / 2,
-                        child: FittedBox(
-                          alignment: Alignment.centerLeft,
-                          child: Text(_text,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ))))
-          ],
-        ));
+        child: GestureDetector(
+            onTap: () {
+              callback?.call(stateType);
+            },
+            child: Row(
+              children: [
+                // state icon
+                Container(
+                    color: debugMode ? Color(0x3300FF000) : null,
+                    width: iconSpaceWidth,
+                    child: Center(
+                        child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _iconStatusColor,
+                              ),
+                            )))),
+                Container(
+                    color: debugMode ? Color(0x330000FF) : null,
+                    width: textSpaceWidth,
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 2),
+                        child: SizedBox(
+                            height: size.height / 2,
+                            child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              child: Text(_text,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ))))
+              ],
+            )));
   }
 }

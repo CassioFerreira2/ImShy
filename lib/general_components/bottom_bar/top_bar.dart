@@ -3,19 +3,33 @@ import 'package:flutter/rendering.dart';
 import 'dart:math' as Math;
 
 import 'package:imshy/constants.dart';
+import 'package:imshy/general_components/bottom_bar/state_item.dart';
+import 'package:imshy/general_components/bottom_bar/state_menu.dart';
 
 class ImshyTopBar extends StatelessWidget {
+  ImshyTopBar({this.listener});
+
+  Function(ItemStateType)? listener;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CustomPaint(
-        painter: BottomBarShape(),
-      ),
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Expanded(
+          child: CustomPaint(
+              painter: TopBarShape(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  StateMenu(
+                    stateChanged: this.listener ?? (_) {},
+                  )
+                ],
+              )))
+    ]);
   }
 }
 
-class BottomBarShape extends CustomPainter {
+class TopBarShape extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Define a paint object
@@ -36,16 +50,17 @@ class BottomBarShape extends CustomPainter {
 
     Path path = Path();
     path.moveTo(size.width, 48.0);
-    path.lineTo(size.width * 0.6, 48.0);
-    path.arcToPoint(Offset(size.width * 0.5, 0.0), radius: Radius.circular(50));
+    path.lineTo(size.width * 0.75, 48.0);
+    path.arcToPoint(Offset(size.width * 0.65, 0.0),
+        radius: Radius.circular(50));
     path.lineTo(size.width, 0.0);
     path.close();
 
     Path shadowPath = Path()
       ..moveTo(size.width, 48.0)
-      ..lineTo(size.width * 0.6, 48.0)
-      ..arcToPoint(Offset(size.width * 0.5, 0.0), radius: Radius.circular(50))
-      ..arcToPoint(Offset(size.width * 0.6, 48.0),
+      ..lineTo(size.width * 0.75, 48.0)
+      ..arcToPoint(Offset(size.width * 0.65, 0.0), radius: Radius.circular(50))
+      ..arcToPoint(Offset(size.width * 0.75, 48.0),
           radius: Radius.circular(50), clockwise: false)
       ..lineTo(size.width, 48.0);
 
@@ -54,5 +69,5 @@ class BottomBarShape extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(BottomBarShape oldDelegate) => false;
+  bool shouldRepaint(TopBarShape oldDelegate) => false;
 }

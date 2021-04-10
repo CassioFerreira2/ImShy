@@ -10,7 +10,7 @@ class StateItem extends StatefulWidget {
 
   StateItem(
       {Key? key,
-      this.size = const Size(190, 35),
+      this.size = const Size(155, 45),
       this.stateType = ItemStateType.All,
       this.callback,
       this.debugMode = false})
@@ -32,7 +32,7 @@ class _StateItem extends State<StateItem> {
   final Function(ItemStateType)? callback;
 
   _StateItem(
-      {this.size = const Size(200.0, 35.0),
+      {this.size = const Size(80.0, 35.0),
       this.stateType = ItemStateType.All,
       this.callback,
       this.debugMode = false});
@@ -64,8 +64,8 @@ class _StateItem extends State<StateItem> {
 
   @override
   Widget build(BuildContext context) {
-    double textSpaceWidth = size.width * 0.95; // 90%
-    double iconSpaceWidth = size.width * 0.05; // 10%
+    double textSpaceWidth = size.width * 0.92; // 90%
+    double iconSpaceWidth = size.width * 0.08; // 10%
 
     return Container(
         width: size.width,
@@ -86,6 +86,7 @@ class _StateItem extends State<StateItem> {
                             aspectRatio: 1,
                             child: Container(
                               decoration: BoxDecoration(
+                                border: Border.all(),
                                 shape: BoxShape.circle,
                                 color: _iconStatusColor,
                               ),

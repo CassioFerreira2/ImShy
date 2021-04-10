@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imshy/constants.dart';
 import 'package:imshy/general_components/bottom_bar/state_item.dart';
 
 class StateMenu extends StatefulWidget {
@@ -36,13 +37,13 @@ class _StateMenu extends State<StateMenu> {
       child: StateItem(
         key: _keyMainItem,
         callback: (_) {
-          _mainItemClicked();
+          mainItemClicked();
         },
       ),
     );
   }
 
-  void _mainItemClicked() {
+  void mainItemClicked() {
     // Se o menu não estiver aberto insira fora da árvore o menu
     if (!_openned) {
       _findMainItem();
@@ -77,26 +78,48 @@ class _StateMenu extends State<StateMenu> {
     return OverlayEntry(
       builder: (context) {
         return Positioned(
-            bottom: _mainItemSize.height + 5,
-            left: _mainItemPosition.dx,
-            width: _mainItemSize.width,
+            top: _mainItemSize.height + 2,
+            left: _mainItemPosition.dx + 33,
+            width: _mainItemSize.width - 32,
             child: Material(color: Colors.transparent, child: _buildItens()));
       },
     );
   }
 
   // Vai apenas retornar uma coluna com cada item
-  Widget _buildItens() => Column(
+  Widget _buildItens() => Container(
+      decoration: BoxDecoration(
+          color: textAndOtherThings.withOpacity(0.4),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
+      child: Column(
         children: [
-          Divider(),
-          StateItem(stateType: ItemStateType.All, callback: _stateItemClicked),
-          Divider(),
-          StateItem(
-              stateType: ItemStateType.Friendship, callback: _stateItemClicked),
-          Divider(),
-          StateItem(
-              stateType: ItemStateType.Desactivated,
-              callback: _stateItemClicked),
+          Padding(
+            padding: EdgeInsets.only(left: 3),
+            child: StateItem(
+                stateType: ItemStateType.All,
+                callback: _stateItemClicked,
+                size: Size(120, 41)),
+          ),
+          Divider(
+            height: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 3),
+            child: StateItem(
+                stateType: ItemStateType.Friendship,
+                callback: _stateItemClicked,
+                size: Size(120, 41)),
+          ),
+          Divider(
+            height: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 3),
+            child: StateItem(
+                stateType: ItemStateType.Desactivated,
+                callback: _stateItemClicked,
+                size: Size(120, 41)),
+          ),
         ],
-      );
+      ));
 }

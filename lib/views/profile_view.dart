@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:imshy/general_components/bottom_bar/bottom_bar.dart';
+import 'package:imshy/general_components/bottom_bar/top_bar.dart';
 import 'package:imshy/general_components/bottom_bar/state_item.dart';
 import 'package:imshy/general_components/bottom_bar/state_menu.dart';
 import 'package:imshy/model/user.dart';
@@ -70,7 +70,7 @@ class _ProfileView extends State<ProfileView> {
                 )),
           ])
         ]),
-        Positioned.fill(child: ImshyTopBar())
+        ImshyTopBar()
       ]),
     );
   }
